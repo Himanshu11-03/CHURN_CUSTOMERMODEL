@@ -1,27 +1,27 @@
-from flask import Flask, request, jsonify
+import streamlit as st
 import joblib
 import pandas as pd
 
-app = Flask(__name__)
-
+# Load model
 model = joblib.load("churn_model.pkl")
 
-@app.route('/')
-def home():
-    return "Customer Churn Prediction API"
+st.title("Customer Churn Prediction")
 
-@app.route('/predict', methods=['POST'])
-def predict():
+tenure = st.number_input("Tenure (Months)", 0, 100)
+monthlycharges = st.number_input("Monthly Charges", 0.0, 500.0)
+totalcharges = st.number_input("Total Charges", 0.0, 10000.0)
 
-    data = request.json
+if st.button("Predict Churn"):
 
-    df = pd.DataFrame([data])
-
-    prediction = model.predict(df)[0]
-
-    return jsonify({
-        "prediction": int(prediction)
+    data = pd.DataFrame({
+        "tenure":[tenure],
+        "MonthlyCharges":[monthlycharges],
+        "TotalCharges":[totalcharges]
     })
 
-if __name__ == "__main__":
-    app.run()
+    prediction = model.predict(data)
+
+    if prediction[0] == 1:
+        st.error("Customer is likely to Churn")
+    else:
+        st.success("Customer is likely to Stay")
