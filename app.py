@@ -19,7 +19,7 @@ if st.button("Predict Churn"):
         "TotalCharges": [totalcharges]
     })
     
-    prediction = model.predict(data)
+    prediction = model.predict(data.values)
     
     if prediction[0] == 1:
         st.error("Customer is likely to Churn")
