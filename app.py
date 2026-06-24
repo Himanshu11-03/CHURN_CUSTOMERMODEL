@@ -14,13 +14,13 @@ totalcharges = st.number_input("Total Charges", 0.0, 10000.0)
 if st.button("Predict Churn"):
 
     data = pd.DataFrame({
-        "tenure":[tenure],
-        "MonthlyCharges":[monthlycharges],
-        "TotalCharges":[totalcharges]
+        "Tenure": [tenure],
+        "MonthlyCharges": [monthlycharges],
+        "TotalCharges": [totalcharges]
     })
-
+    
     prediction = model.predict(data)
-
+    
     if prediction[0] == 1:
         st.error("Customer is likely to Churn")
     else:
